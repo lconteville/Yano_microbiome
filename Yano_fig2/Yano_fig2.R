@@ -114,7 +114,7 @@ fig2 <- ggdraw() +
   draw_plot(fig2B, x = .27, y = 0, width = .25, height = .98) +
   draw_plot(fig2C, x = .52, y = 0.055, width = .46, height = .925) +
   draw_plot_label(label = c("A", "B", "C"), size = 12,
-                  x = c(0, .26, .51), y = c(1, 1, 1))+
+                  x = c(0, .26, .51), y = c(1, 1, 1)) +
   theme(panel.background = element_rect(fill = "white",colour = "white"))
 
 fig2
