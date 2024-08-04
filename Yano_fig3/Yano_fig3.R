@@ -48,13 +48,11 @@ physeq = merge_phyloseq(OTU, TAX, sampledata)
 sample_data(physeq)$Group <- factor((sample_data(physeq)$Group), levels=c("Yano_BR","Yano_VE","Matses","Tunapuco","US"))
 
 #### GET THE TOP 6 PHYLA ####
-
 phylum.sum = tapply(taxa_sums(physeq), tax_table(physeq)[, "Phylum"], sum, na.rm=TRUE)
 top6phyla = names(sort(phylum.sum, TRUE))[1:6]
 physeq_top6 = prune_taxa((tax_table(physeq)[, "Phylum"] %in% top6phyla), physeq)
 
 #### BARPLOT TOP 6 PHYLA ####
-
 fig3A <- plot_bar(physeq_top6, fill = "Phylum") +
   facet_grid(. ~Group, drop=TRUE,scales = "free_x",  space = "free_x") +
   ylab("Relative Abundance (%)") +
@@ -69,7 +67,6 @@ fig3A
 
 
 #### BOXPLOT FIRMICUTES/BACTEROIDETES ####
-
 df_top6 <- psmelt(physeq_top6)
 bac_fir <- df_top6[df_top6$OTU %in% c("Bacteroidetes", "Firmicutes"),]
 
@@ -90,13 +87,9 @@ fig3B <- ggplot(data=bac_fir) +
 fig3B
 
 #### BARPLOT LEFSE ####
-
 lefse <- read.csv("data/lefse_bact_gen.tsv", sep="\t")
-
 lefse$Group <- factor(lefse$Group, levels=c("Yano_BR","Yano_VE","Matses","Tunapuco","US"))
-
 genera.order <- lefse$Genera[order(factor(lefse$Group), decreasing =TRUE)]
-
 lefse$Genera <- factor(lefse$Genera, levels=genera.order)
 
 fig3C <- ggplot(lefse, aes(x=LDAScore, y=Genera, fill=Group)) + 
@@ -118,14 +111,12 @@ fig3C <- ggplot(lefse, aes(x=LDAScore, y=Genera, fill=Group)) +
 
 fig3C
 
-#### ARCHAEA ####
-
+#### BARPLOT ARCHAEA ####
 otu_arch <- read.csv("data/kraken_arch_gen.tsv", header=TRUE, row.names=1, sep="\t")
 tax_arch <- read.csv("data/kraken_arch_tax.tsv", header=TRUE, sep="\t")
 metadata <- read.csv("data/metadata.tsv", header=TRUE, row.names=1, sep="\t")
 
-## CREATE PHYLOSEQ OBJECT ##
-
+### CREATE PHYLOSEQ OBJECT ###
 rownames(tax_arch) <- tax_arch$ID
 taxmatrix =  as.matrix(tax_arch)
 
@@ -138,14 +129,13 @@ physeq = phyloseq(OTU, TAX, sampledata)
 sample_data(physeq)$Group <- factor((sample_data(physeq)$Group), levels=c("Yano_BR","Yano_VE","Matses","Tunapuco","CA","Norman","US"))
 
 #### GET THE TOP 3 ARCHAEA ####
-
 arch.sum = tapply(taxa_sums(physeq), tax_table(physeq)[, "ID"], sum, na.rm=TRUE)
 top3arch = names(sort(arch.sum, TRUE))[1:3]
 physeq_top3arch = prune_taxa((tax_table(physeq)[, "ID"] %in% top3arch), physeq)
+
 df_top3arch <- psmelt(physeq_top3arch)
 
 samples.order <- df_top3arch$Sample[order(df_top3arch$Group, df_top3arch$Sample, decreasing = FALSE)]
-
 df_top3arch$Sample <- factor(df_top3arch$Sample, levels=unique(samples.order))
 
 fig3D <- ggplot(df_top3arch, aes(x=Sample, y=Abundance, color=Group, fill=Group)) +
@@ -167,7 +157,6 @@ fig3D <- ggplot(df_top3arch, aes(x=Sample, y=Abundance, color=Group, fill=Group)
 fig3D
 
 #### GENERATE PANEL WITH THE FOUR PLOTS ####
-
 fig3 <- ggdraw() +
   draw_plot(fig3A, x = .001, y = .68, width = 1, height = .33) +
   draw_plot(fig3B, x = .001, y = .33, width = .41, height = .35) +
