@@ -6,14 +6,6 @@ library("cowplot")
 
 setwd("D:/Github/Yano_microbiome/")
 
-#### INPUT DATA ####
-otumat <- read.table("data/kraken_bact_phyla.tsv", header=TRUE, row.names=1, sep="\t")
-taxmat <- read.table("data/kraken_bact_phyla_tax.tsv", header=TRUE, sep="\t")
-metadata <- read.table("data/metadata.tsv", header=TRUE, row.names=1, sep="\t")
-
-# Ensure row names of OTU table match Phyla in taxmat
-identical(rownames(otumat), taxmat$Phylum)
-
 #### SET colors and theme ####
 group.colors <- c("Yano_BR" = "brown2", "Yano_VE" = "#E7B800",
                   "Matses" ="#53B400", "Tunapuco" = "#4E84C4",
@@ -34,6 +26,14 @@ theme_set(theme_classic()+ theme(
   strip.text.x = element_text(size = 8),
   plot.background = element_blank()
 ))
+
+#### INPUT DATA ####
+otumat <- read.table("data/kraken_bact_phyla.tsv", header=TRUE, row.names=1, sep="\t")
+taxmat <- read.table("data/kraken_bact_phyla_tax.tsv", header=TRUE, sep="\t")
+metadata <- read.table("data/metadata.tsv", header=TRUE, row.names=1, sep="\t")
+
+# Ensure row names of OTU table match Phyla in taxmat
+identical(rownames(otumat), taxmat$Phylum)
 
 #### CREATE PHYLOSEQ OBJECT ####
 rownames(taxmat) <- taxmat$Phylum
